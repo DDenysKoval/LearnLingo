@@ -1,6 +1,11 @@
+import clsx from "clsx";
 import { Link, NavLink, type NavLinkProps } from "react-router-dom";
 
-const Header = () => {
+interface HeaderProps {
+  page: string;
+}
+
+const Header = ({ page }: HeaderProps) => {
   const navLinkClass: NavLinkProps["className"] = ({ isActive }) =>
     `relative ${
       isActive
@@ -9,8 +14,13 @@ const Header = () => {
     }`;
 
   return (
-    <header className="max-w-360 mx-auto px-32 py-5">
-      <nav className="flex flex-row justify-between items-center">
+    <header
+      className={clsx(
+        " font-roboto leading-[1.17] tracking-[-0.02em] text-[#121417] text-base",
+        page !== "/" && "bg-[#f8f8f8]"
+      )}
+    >
+      <nav className="flex flex-row justify-between items-center max-w-360 mx-auto px-32 py-5">
         <Link className="flex flex-row gap-2 items-center" to="/">
           <svg width={28} height={28}>
             <use href="/icons.svg#logo"></use>
