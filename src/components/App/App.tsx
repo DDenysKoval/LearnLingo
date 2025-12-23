@@ -1,6 +1,3 @@
-// import { useState } from "react";
-import Header from "../Header/Header";
-
 import { createBrowserRouter } from "react-router";
 import HomePage from "../../pages/HomePage/HomePage";
 import { RouterProvider } from "react-router/dom";
@@ -25,12 +22,7 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  return (
-    <body>
-      <Header />
-      <RouterProvider router={router} />
-    </body>
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default App;

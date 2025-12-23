@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-roboto: "Roboto", sans-serif;
+  --color-orange: #e0a39a;
+  --statistics-list-item: ;
+}
+
+.container {
+  @apply max-w-360 mx-auto px-16;
+}
+
+.statistics-list-item {
+  @apply flex flex-row gap-4;
+}
+
+.statistics-list-item-number {
+  @apply text-[28px] font-medium leading-[1.14];
+}
+
+.statistics-list-item-text {
+  @apply text-sm font-normal leading-[1.29];
+}

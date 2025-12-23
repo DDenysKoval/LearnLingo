@@ -1,5 +1,12 @@
+import Header from "../../components/Header/Header";
+
 const FavoritesPage = () => {
-  return <main>favorites page main</main>;
+  return (
+    <>
+      <Header />
+      <main>favorites page main</main>
+    </>
+  );
 };
 
 export default FavoritesPage;
