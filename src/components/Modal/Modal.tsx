@@ -31,7 +31,7 @@ const Modal = ({ onClose, children }: ModalProps) => {
       aria-modal="true"
       onClick={handleBackdropClick}
     >
-      <div className="bg-white rounded-xl shadow-xl p-8 w-full max-w-md">
+      <div className="bg-white rounded-xl shadow-xl p-16 w-full max-w-141.5">
         {children}
       </div>
     </div>,
