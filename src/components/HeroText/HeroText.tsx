@@ -1,6 +1,6 @@
-const HeroText = () => {
-  const handleClick = () => {};
+import { Link } from "react-router";
 
+const HeroText = () => {
   return (
     <div className="w-180 h-132.5 px-16 py-24 bg-[#f8f8f8] rounded-[30px]">
       <h1 className="mb-8 text-5xl font-medium">
@@ -15,13 +15,12 @@ const HeroText = () => {
         Elevate your language proficiency to new heights by connecting with
         highly qualified and experienced tutors.
       </p>
-      <button
-        className="w-66.75 h-15 bg-orange rounded-xl flex justify-center items-center leading-[1.56] font-bold transition duration-300 ease-in-out hover:bg-[#d87f7f] hover:drop-shadow-md cursor-pointer"
-        type="button"
-        onClick={handleClick}
+      <Link
+        className="flex justify-center items-center h-15 bg-orange rounded-xl font-bold text-[18px] leading-[1.56] hover:bg-[#d87f7f] hover:drop-shadow-md cursor-pointer transition duration-300 ease-in-out w-66.75"
+        to={"/teachers"}
       >
         Get started
-      </button>
+      </Link>
     </div>
   );
 };

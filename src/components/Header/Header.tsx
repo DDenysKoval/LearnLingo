@@ -4,6 +4,9 @@ import { Link, NavLink, type NavLinkProps } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import RegisterForm from "../RegisterForm/RegisterForm";
 import LoginForm from "../LoginForm/LoginForm";
+import { useAuth } from "../../features/auth/useAuth";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase/firebase.ts";
 
 interface HeaderProps {
   page: string;
@@ -12,8 +15,9 @@ interface HeaderProps {
 type ModalType = "login" | "register" | null;
 
 const Header = ({ page }: HeaderProps) => {
-  // const [isModalOpen, setIsModalOpen] = useState("false");
+  const { userLoggedIn, currentUser } = useAuth();
   const [modalType, setIsModalType] = useState<ModalType>(null);
+
   const navLinkClass: NavLinkProps["className"] = ({ isActive }) =>
     `relative ${
       isActive
@@ -26,6 +30,10 @@ const Header = ({ page }: HeaderProps) => {
   };
   const handleRegister = () => {
     setIsModalType("register");
+  };
+  const handleLogout = async () => {
+    await signOut(auth);
+    setIsModalType(null);
   };
   const handleClose = () => {
     setIsModalType(null);
@@ -63,31 +71,47 @@ const Header = ({ page }: HeaderProps) => {
               </NavLink>
             </li>
           </ul>
-          <div className="flex flex-row gap-4 items-center">
-            <button
-              className="flex flex-row gap-2 items-center font-bold h-5 cursor-pointer  hover:text-orange transition duration-500 ease-in-out"
-              type="button"
-              onClick={handleLogin}
-            >
-              <svg className="fill-none stroke-orange" width={20} height={20}>
-                <use href="/icons.svg#login"></use>
-              </svg>
-              Login
-            </button>
-            <button
-              className="flex justify-center items-center rounded-xl bg-[#121417] h-12 w-41.5 text-white font-bold cursor-pointer hover:border-orange hover:border hover:drop-shadow-md hover:text-orange"
-              type="button"
-              onClick={handleRegister}
-            >
-              Registration
-            </button>
-          </div>
+          {userLoggedIn ? (
+            <div className="flex flex-row gap-4 items-center w-62.5">
+              <p>{currentUser?.email}</p>
+              <button
+                className="flex flex-row gap-2 items-center font-bold h-12 cursor-pointer  hover:text-orange transition duration-500 ease-in-out"
+                type="button"
+                onClick={handleLogout}
+              >
+                <svg className="fill-none stroke-orange" width={20} height={20}>
+                  <use href="/icons.svg#login"></use>
+                </svg>
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className="flex flex-row gap-4 items-center">
+              <button
+                className="flex flex-row gap-2 items-center font-bold h-5 w-17 cursor-pointer  hover:text-orange transition duration-500 ease-in-out"
+                type="button"
+                onClick={handleLogin}
+              >
+                <svg className="fill-none stroke-orange" width={20} height={20}>
+                  <use href="/icons.svg#login"></use>
+                </svg>
+                Login
+              </button>
+              <button
+                className="flex justify-center items-center rounded-xl bg-[#121417] h-12 w-41.5 text-white font-bold cursor-pointer hover:border-orange hover:border hover:drop-shadow-md hover:text-orange"
+                type="button"
+                onClick={handleRegister}
+              >
+                Registration
+              </button>
+            </div>
+          )}
         </nav>
       </header>
       {modalType && (
         <Modal onClose={handleClose}>
-          {modalType === "login" && <LoginForm />}
-          {modalType === "register" && <RegisterForm />}
+          {modalType === "login" && <LoginForm onSuccess={handleClose} />}
+          {modalType === "register" && <RegisterForm onSuccess={handleClose} />}
         </Modal>
       )}
     </>

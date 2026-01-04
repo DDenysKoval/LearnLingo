@@ -4,6 +4,8 @@ import { RouterProvider } from "react-router/dom";
 import TeachersPage from "../../pages/TeachersPage/TeachersPage";
 import FavoritesPage from "../../pages/Favorites/FavoritesPage";
 import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage";
+import { Toaster } from "react-hot-toast";
+import { AuthProvider } from "../../features/auth/AuthProvider";
 
 const router = createBrowserRouter([
   {
@@ -22,7 +24,14 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+      <Toaster position="top-center" reverseOrder={false} />
+    </>
+  );
 };
 
 export default App;

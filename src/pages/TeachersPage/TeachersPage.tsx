@@ -1,4 +1,4 @@
-import FilterBar from "../../components/FilterBAr/FilterBar";
+import FilterBar from "../../components/FilterBar/FilterBar";
 import Header from "../../components/Header/Header";
 import Teachers from "../../components/Teachers/Teachers";
 
