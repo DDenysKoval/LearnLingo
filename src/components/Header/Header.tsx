@@ -7,6 +7,7 @@ import LoginForm from "../LoginForm/LoginForm";
 import { useAuth } from "../../features/auth/useAuth";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebase.ts";
+import { useNavigate } from "react-router";
 
 interface HeaderProps {
   page: string;
@@ -16,6 +17,7 @@ type ModalType = "login" | "register" | null;
 
 const Header = ({ page }: HeaderProps) => {
   const { userLoggedIn, currentUser } = useAuth();
+  const navigate = useNavigate();
   const [modalType, setIsModalType] = useState<ModalType>(null);
 
   const navLinkClass: NavLinkProps["className"] = ({ isActive }) =>
@@ -34,6 +36,7 @@ const Header = ({ page }: HeaderProps) => {
   const handleLogout = async () => {
     await signOut(auth);
     setIsModalType(null);
+    navigate("/");
   };
   const handleClose = () => {
     setIsModalType(null);
@@ -65,11 +68,13 @@ const Header = ({ page }: HeaderProps) => {
                 Teachers
               </NavLink>
             </li>
-            <li className="transition duration-500 ease-in-out hover:text-orange">
-              <NavLink className={navLinkClass} to="/favorites">
-                Favorites
-              </NavLink>
-            </li>
+            {userLoggedIn && (
+              <li className="transition duration-500 ease-in-out hover:text-orange">
+                <NavLink className={navLinkClass} to="/favorites">
+                  Favorites
+                </NavLink>
+              </li>
+            )}
           </ul>
           {userLoggedIn ? (
             <div className="flex flex-row gap-4 items-center w-62.5">
