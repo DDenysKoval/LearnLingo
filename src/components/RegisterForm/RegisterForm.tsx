@@ -1,11 +1,11 @@
 import { useState } from "react";
-import ButtonComp from "../ButtonComp/ButtonComp.tsx";
+import ButtonComp from "../ButtonComp/ButtonComp";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from "formik";
 import { Navigate, useNavigate } from "react-router";
 import { doCreateUserWithEmailAndPassword } from "../../firebase/auth";
-import { useAuth } from "../../features/auth/useAuth.ts";
+import { useAuth } from "../../features/auth/useAuth";
 import { updateProfile } from "firebase/auth";
 
 export interface SubmitRegisterFormValues {

@@ -2,11 +2,11 @@ import clsx from "clsx";
 import { useState } from "react";
 import { Link, NavLink, type NavLinkProps } from "react-router-dom";
 import Modal from "../Modal/Modal";
-import RegisterForm from "../RegisterForm/RegisterForm.tsx";
-import LoginForm from "../LoginForm/LoginForm.tsx";
-import { useAuth } from "../../features/auth/useAuth.ts";
+import RegisterForm from "../RegisterForm/RegisterForm";
+import LoginForm from "../LoginForm/LoginForm";
+import { useAuth } from "../../features/auth/useAuth";
 import { signOut } from "firebase/auth";
-import { auth } from "../../firebase/firebase.ts";
+import { auth } from "../../firebase/firebase";
 import { useNavigate } from "react-router";
 
 interface HeaderProps {

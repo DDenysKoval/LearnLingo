@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ButtonComp from "../ButtonComp/ButtonComp.tsx";
+import ButtonComp from "../ButtonComp/ButtonComp";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from "formik";

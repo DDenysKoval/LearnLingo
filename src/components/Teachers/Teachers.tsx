@@ -1,6 +1,6 @@
-import { fetchAllTeachers } from "../../services/teachersService.ts";
-import type { Teacher } from "../../types/teacher.ts";
-import TeacherItem from "../TeachersItem/TeachersItem.tsx";
+import { fetchAllTeachers } from "../../services/teachersService";
+import type { Teacher } from "../../types/teacher";
+import TeacherItem from "../TeachersItem/TeachersItem";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 const Teachers = () => {

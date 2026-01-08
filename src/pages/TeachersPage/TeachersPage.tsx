@@ -1,6 +1,6 @@
-import FilterBar from "../../components/FilterBar/FilterBar.tsx";
-import Header from "../../components/Header/Header.tsx";
-import Teachers from "../../components/Teachers/Teachers.tsx";
+import FilterBar from "../../components/FilterBar/FilterBar";
+import Header from "../../components/Header/Header";
+import Teachers from "../../components/Teachers/Teachers";
 
 const TeachersPage = () => {
   return (
