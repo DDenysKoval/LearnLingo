@@ -1,4 +1,4 @@
-import FilterBar from "../../components/FilterBar/FilterBar.ts";
+import FilterBar from "../../components/FilterBar/FilterBar.tsx";
 import Header from "../../components/Header/Header.ts";
 import Teachers from "../../components/Teachers/Teachers.ts";
 
