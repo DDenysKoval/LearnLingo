@@ -12,13 +12,13 @@
 }
 
 .statistics-list-item {
-  @apply flex flex-row gap-4;
+  @apply flex flex-row gap-4 h-9;
 }
 
 .statistics-list-item-number {
-  @apply text-[28px] font-medium leading-[1.14];
+  @apply text-[28px] font-medium leading-[1.14] h-9 tracking-[-0.02em];
 }
 
 .statistics-list-item-text {
-  @apply text-sm font-normal leading-[1.29];
+  @apply text-sm font-normal leading-[1.29] h-9 tracking-[-0.02em];
 }

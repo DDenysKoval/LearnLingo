@@ -18,7 +18,7 @@ const Teachers = () => {
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <div>
+    <div className="mx-auto px-32 max-w-360">
       <ul className="flex flex-col gap-8">
         {data?.pages.map((page) =>
           page.teachers.map((teacher: Teacher) => (
