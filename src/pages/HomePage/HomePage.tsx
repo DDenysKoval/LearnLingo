@@ -1,7 +1,7 @@
-import Header from "../../components/Header/Header";
-import HeroImage from "../../components/HeroImage/HeroImage";
-import HeroText from "../../components/HeroText/HeroText";
-import Statistics from "../../components/Statistics/Statistics";
+import Header from "../../components/Header/Header.tsx";
+import HeroImage from "../../components/HeroImage/HeroImage.tsx";
+import HeroText from "../../components/HeroText/HeroText.tsx";
+import Statistics from "../../components/Statistics/Statistics.tsx";
 
 const HomePage = () => {
   return (

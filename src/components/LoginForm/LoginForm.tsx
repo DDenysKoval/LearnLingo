@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ButtonComp from "../ButtonComp/ButtonComp";
+import ButtonComp from "../ButtonComp/ButtonComp.tsx";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from "formik";
@@ -7,7 +7,7 @@ import {
   doSignInWithEmailAndPassword,
   // doSignInWithGoogle,
 } from "../../firebase/auth";
-import { useAuth } from "../../features/auth/useAuth";
+import { useAuth } from "../../features/auth/useAuth.ts";
 import { Navigate, useNavigate } from "react-router";
 
 export interface SubmitLoginFormValues {

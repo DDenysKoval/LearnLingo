@@ -1,6 +1,6 @@
 import axios from "axios";
-import getEnvVar from "../utils/getEnvVar";
-import type { Teacher } from "../types/teacher";
+import getEnvVar from "../utils/getEnvVar.ts";
+import type { Teacher } from "../types/teacher.ts";
 
 const BASE_URL = getEnvVar("VITE_API_URL")
 

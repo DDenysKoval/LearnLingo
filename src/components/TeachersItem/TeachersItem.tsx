@@ -1,4 +1,4 @@
-import type { Teacher } from "../../types/teacher";
+import type { Teacher } from "../../types/teacher.ts";
 
 interface TeacherDataProps {
   teacherData: Teacher;
