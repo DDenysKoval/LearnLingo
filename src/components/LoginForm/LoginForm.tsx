@@ -111,13 +111,13 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
               className="text-red-400 text-[10px] absolute top-14 left-0"
             />
             <button
-              className="absolute top-4 right-4.5"
+              className="absolute top-4 right-4.5 cursor-pointer"
               type="button"
               onClick={handleClick}
               onMouseDown={(e) => e.preventDefault()}
             >
               <svg
-                className={`fill-none ${
+                className={`fill-none hover:stroke-[#d87f7f] transition duration-300 ease-in-out ${
                   showPassword ? "stroke-orange" : " stroke-black"
                 }`}
                 width={20}

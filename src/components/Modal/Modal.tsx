@@ -31,7 +31,20 @@ const Modal = ({ onClose, children }: ModalProps) => {
       aria-modal="true"
       onClick={handleBackdropClick}
     >
-      <div className="bg-white rounded-xl shadow-xl p-16 w-full max-w-141.5">
+      <div className="bg-white rounded-xl shadow-xl p-16 w-full max-w-141.5 relative">
+        <button
+          type="button"
+          className="absolute top-5 right-5 cursor-pointer rotate-90"
+          onClick={onClose}
+        >
+          <svg
+            className="stroke-black hover:stroke-[#d87f7f] hover:rotate-90 transition duration-300 ease-in-out"
+            width={32}
+            height={32}
+          >
+            <use href="/icons.svg#close"></use>
+          </svg>
+        </button>
         {children}
       </div>
     </div>,

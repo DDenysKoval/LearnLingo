@@ -1,5 +1,6 @@
 import { fetchAllTeachers } from "../../services/teachersService";
 import type { Teacher } from "../../types/teacher";
+import ButtonComp from "../ButtonComp/ButtonComp";
 import TeacherItem from "../TeachersItem/TeachersItem";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
@@ -18,8 +19,8 @@ const Teachers = () => {
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <div className="mx-auto px-32 max-w-360">
-      <ul className="flex flex-col gap-8">
+    <div className="flex flex-col items-center mx-auto px-32 max-w-360 pb-24">
+      <ul className="flex flex-col gap-8 mb-18">
         {data?.pages.map((page) =>
           page.teachers.map((teacher: Teacher) => (
             <li key={teacher.id}>
@@ -29,9 +30,12 @@ const Teachers = () => {
         )}
       </ul>
       {hasNextPage && (
-        <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-          {isFetchingNextPage ? "Loading..." : "Load more"}
-        </button>
+        <ButtonComp
+          onClick={() => fetchNextPage()}
+          text={isFetchingNextPage ? "Loading..." : "Load more"}
+          type="button"
+          width="w-[183px]"
+        />
       )}
     </div>
   );
