@@ -179,8 +179,8 @@ const TeacherItem = ({ teacherData }: TeacherDataProps) => {
             />
           )}
           {modalIsOpen && (
-            <Modal onClose={handleClose}>
-              <BookingForm />
+            <Modal onClose={handleClose} width="w-150">
+              <BookingForm teacherData={teacherData} />
             </Modal>
           )}
         </div>
