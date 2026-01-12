@@ -1,6 +1,7 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import type { Teacher } from "../../types/teacher";
 import ButtonComp from "../ButtonComp/ButtonComp";
+import { useNavigate } from "react-router";
 
 type Inputs = {
   name: string;
@@ -10,22 +11,28 @@ type Inputs = {
 
 interface BookingFormProps {
   teacherData: Teacher;
+  onSuccess: () => void;
 }
 
-const BookingForm = ({ teacherData }: BookingFormProps) => {
+const BookingForm = ({ teacherData, onSuccess }: BookingFormProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
+  const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data);
+    onSuccess();
+    navigate("/");
+  };
 
   return (
     <div>
-      <h1 className="mb-5 font-medium leading-[1.2] text-[40px]">
+      <p className="mb-5 font-medium leading-[1.2] text-[40px]">
         Book trial lesson
-      </h1>
+      </p>
       <p className="mb-5 leading-[1.38] text-[16px]">
         Our experienced tutor will assess your current language level, discuss
         your learning goals, and tailor the lesson to your specific needs.
@@ -74,7 +81,6 @@ const BookingForm = ({ teacherData }: BookingFormProps) => {
             ></span>
             <span>Career and business</span>
           </label>
-
           <div>
             <label className="flex items-center cursor-pointer" htmlFor="kids">
               <input
