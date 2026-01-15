@@ -4,12 +4,14 @@ import clsx from "clsx";
 import ButtonComp from "../ButtonComp/ButtonComp";
 import BookingForm from "../BookingForm/BookingForm";
 import Modal from "../Modal/Modal";
+import { useTeacherStore } from "../../libs/stores/teacherStore";
 
 interface TeacherDataProps {
   teacherData: Teacher;
 }
 
 const TeacherItem = ({ teacherData }: TeacherDataProps) => {
+  const { addToFavorites, removeFromFavorites, isFavorite } = useTeacherStore();
   const [isUnfolded, setIsUnfolded] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const handleUnfold = () => {
@@ -73,7 +75,14 @@ const TeacherItem = ({ teacherData }: TeacherDataProps) => {
                   </span>
                 </p>
               </div>
-              <button type="button">
+              <button
+                type="button"
+                onClick={() =>
+                  isFavorite(teacherData.id)
+                    ? removeFromFavorites(teacherData.id)
+                    : addToFavorites(teacherData)
+                }
+              >
                 <svg
                   className="fill-none stroke-black hover:stroke-orange transition duration-300 ease-in-out"
                   height={26}
