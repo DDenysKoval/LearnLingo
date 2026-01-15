@@ -132,7 +132,7 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
               onMouseDown={(e) => e.preventDefault()}
             >
               <svg
-                className={`fill-none hover:stroke-[#d87f7f] transition duration-300 ease-in-out${
+                className={`fill-none hover:stroke-[#d87f7f] transition duration-300 ease-in-out ${
                   showPassword ? "stroke-orange" : " stroke-black"
                 }`}
                 width={20}

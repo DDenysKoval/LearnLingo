@@ -5,23 +5,55 @@ import ButtonComp from "../ButtonComp/ButtonComp";
 import BookingForm from "../BookingForm/BookingForm";
 import Modal from "../Modal/Modal";
 import { useTeacherStore } from "../../libs/stores/teacherStore";
+import { useAuth } from "../../features/auth/useAuth";
+import WarningModal from "../WarningModal/WarningModal";
+import RegisterForm from "../RegisterForm/RegisterForm";
+import LoginForm from "../LoginForm/LoginForm";
 
 interface TeacherDataProps {
   teacherData: Teacher;
 }
 
+type ModalType = "login" | "register" | null;
+
 const TeacherItem = ({ teacherData }: TeacherDataProps) => {
   const { addToFavorites, removeFromFavorites, isFavorite } = useTeacherStore();
   const [isUnfolded, setIsUnfolded] = useState(false);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [bookModalIsOpen, setBookModalIsOpen] = useState(false);
+  const [warningModalIsOpen, setWarningModalIsOpen] = useState(false);
+  const [modalType, setIsModalType] = useState<ModalType>(null);
+  const { userLoggedIn } = useAuth();
+
   const handleUnfold = () => {
     setIsUnfolded(true);
   };
-  const handleClick = () => {
-    setModalIsOpen(true);
+  const handleBooking = () => {
+    setBookModalIsOpen(true);
   };
   const handleClose = () => {
-    setModalIsOpen(false);
+    setBookModalIsOpen(false);
+    setWarningModalIsOpen(false);
+    setIsModalType(null);
+  };
+  const handleFavourite = () => {
+    if (isFavorite(teacherData.id)) {
+      removeFromFavorites(teacherData.id);
+    } else {
+      addToFavorites(teacherData);
+    }
+  };
+  const handleHeartClick = () => {
+    if (!userLoggedIn) {
+      setWarningModalIsOpen(true);
+      return;
+    }
+    handleFavourite();
+  };
+  const handleLogin = () => {
+    setIsModalType("login");
+  };
+  const handleRegister = () => {
+    setIsModalType("register");
   };
 
   return (
@@ -75,16 +107,13 @@ const TeacherItem = ({ teacherData }: TeacherDataProps) => {
                   </span>
                 </p>
               </div>
-              <button
-                type="button"
-                onClick={() =>
-                  isFavorite(teacherData.id)
-                    ? removeFromFavorites(teacherData.id)
-                    : addToFavorites(teacherData)
-                }
-              >
+              <button type="button" onClick={handleHeartClick}>
                 <svg
-                  className="fill-none stroke-black hover:stroke-orange transition duration-300 ease-in-out"
+                  className={`fill-none stroke-black scale-100 hover:scale-110 hover:stroke-orange transition duration-300 ease-in-out ${
+                    isFavorite(teacherData.id)
+                      ? "fill-orange stroke-orange"
+                      : ""
+                  }`}
                   height={26}
                   width={26}
                 >
@@ -138,7 +167,7 @@ const TeacherItem = ({ teacherData }: TeacherDataProps) => {
             <ul className="flex flex-col gap-8 mb-8">
               {teacherData.reviews.map((review) => {
                 return (
-                  <li className="flex flex-col">
+                  <li className="flex flex-col" key={review.reviewer_name}>
                     <div className="flex mb-4">
                       <img
                         className="w-11 h-11 rounded-[50%] mr-3"
@@ -183,13 +212,26 @@ const TeacherItem = ({ teacherData }: TeacherDataProps) => {
             <ButtonComp
               text="Book trial lesson"
               width="w-[232px]"
-              onClick={handleClick}
+              onClick={handleBooking}
               type="button"
             />
           )}
-          {modalIsOpen && (
+          {bookModalIsOpen && (
+            <Modal onClose={handleClose} width="w-150">
+              <BookingForm teacherData={teacherData} onSuccess={handleClose} />
+            </Modal>
+          )}
+          {warningModalIsOpen && (
             <Modal onClose={handleClose}>
-              <BookingForm />
+              <WarningModal onRegister={handleRegister} onLogin={handleLogin} />
+            </Modal>
+          )}
+          {modalType && (
+            <Modal onClose={handleClose}>
+              {modalType === "login" && <LoginForm onSuccess={handleClose} />}
+              {modalType === "register" && (
+                <RegisterForm onSuccess={handleClose} />
+              )}
             </Modal>
           )}
         </div>

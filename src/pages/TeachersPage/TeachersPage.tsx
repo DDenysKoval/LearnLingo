@@ -8,7 +8,7 @@ const TeachersPage = () => {
       <Header page="/teachers" />
       <main className="font-roboto leading-[1.17] tracking-[-0.02em] text-[#121417] text-base bg-[#f8f8f8]">
         <FilterBar />
-        <Teachers />
+        <Teachers variant="all" />
       </main>
     </>
   );

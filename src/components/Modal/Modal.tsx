@@ -1,12 +1,14 @@
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
+import clsx from "clsx";
 
 interface ModalProps {
   onClose: () => void;
+  width?: string;
   children: React.ReactNode;
 }
 
-const Modal = ({ onClose, children }: ModalProps) => {
+const Modal = ({ onClose, children, width }: ModalProps) => {
   useEffect(() => {
     const handleKeydown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -31,7 +33,12 @@ const Modal = ({ onClose, children }: ModalProps) => {
       aria-modal="true"
       onClick={handleBackdropClick}
     >
-      <div className="bg-white rounded-xl shadow-xl p-16 w-full max-w-141.5 relative">
+      <div
+        className={clsx(
+          "bg-white rounded-xl shadow-xl p-16  relative",
+          width ? width : "w-141.5"
+        )}
+      >
         <button
           type="button"
           className="absolute top-5 right-5 cursor-pointer rotate-90"

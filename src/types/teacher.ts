@@ -19,3 +19,11 @@ export interface Teacher {
   conditions: string[],
   experience: string
 }
+
+export type TeachersVariant = "all" | "favorites";
+
+export type TeacherFilters = {
+  language: string;
+  level: string;
+  price: number;
+}
