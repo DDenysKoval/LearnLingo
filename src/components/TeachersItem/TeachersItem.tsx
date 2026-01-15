@@ -9,6 +9,7 @@ import { useAuth } from "../../features/auth/useAuth";
 import WarningModal from "../WarningModal/WarningModal";
 import RegisterForm from "../RegisterForm/RegisterForm";
 import LoginForm from "../LoginForm/LoginForm";
+import { useTeachersFilterStore } from "../../libs/stores/teacherFilterStore";
 
 interface TeacherDataProps {
   teacherData: Teacher;
@@ -18,6 +19,7 @@ type ModalType = "login" | "register" | null;
 
 const TeacherItem = ({ teacherData }: TeacherDataProps) => {
   const { addToFavorites, removeFromFavorites, isFavorite } = useTeacherStore();
+  const { filters } = useTeachersFilterStore();
   const [isUnfolded, setIsUnfolded] = useState(false);
   const [bookModalIsOpen, setBookModalIsOpen] = useState(false);
   const [warningModalIsOpen, setWarningModalIsOpen] = useState(false);
@@ -71,7 +73,7 @@ const TeacherItem = ({ teacherData }: TeacherDataProps) => {
           <div className="flex flex-row justify-between">
             <div className="mb-8">
               <p className="mb-2 leading-normal text-[#8a8a89] font-medium">
-                Languages
+                {filters.language}
               </p>
               <h2 className="text-2xl font-medium">
                 {teacherData.name} {teacherData.surname}
@@ -200,7 +202,10 @@ const TeacherItem = ({ teacherData }: TeacherDataProps) => {
             {teacherData.levels.map((level) => {
               return (
                 <li
-                  className="flex justify-center items-center h-8 border border-neutral-300 rounded-4xl px-3 text-[14px] font-medium first:bg-orange"
+                  className={clsx(
+                    "flex justify-center items-center h-8 border border-neutral-300 rounded-4xl px-3 text-[14px] font-medium",
+                    level === filters.level && "bg-orange"
+                  )}
                   key={level}
                 >
                   #{level}
