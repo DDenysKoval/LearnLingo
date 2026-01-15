@@ -1,13 +1,14 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import getEnvVar from "../utils/getEnvVar";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBHx0U0424XStvzFNDKxs6pEjiZ6kasqWM",
+  apiKey: getEnvVar("VITE_API_GOOGLE_KEY"),
   authDomain: "learnlingo-dk.firebaseapp.com",
   databaseURL:
     "https://learnlingo-dk-default-rtdb.europe-west1.firebasedatabase.app",
