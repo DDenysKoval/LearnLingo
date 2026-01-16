@@ -2,6 +2,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import type { Teacher } from "../../types/teacher";
 import ButtonComp from "../ButtonComp/ButtonComp";
 import { useNavigate } from "react-router";
+import toast from "react-hot-toast";
 
 type Inputs = {
   name: string;
@@ -25,6 +26,7 @@ const BookingForm = ({ teacherData, onSuccess }: BookingFormProps) => {
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
     onSuccess();
+    toast.success("Successfully booking!");
     navigate("/");
   };
 
