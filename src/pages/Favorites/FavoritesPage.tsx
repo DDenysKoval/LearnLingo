@@ -6,7 +6,7 @@ const FavoritesPage = () => {
   return (
     <>
       <Header page="/favorites" />
-      <main className="font-roboto leading-[1.17] tracking-[-0.02em] text-[#121417] text-base bg-[#f8f8f8] h-[calc(100vh-88px)]">
+      <main className="font-roboto leading-[1.17] tracking-[-0.02em] text-[#121417] text-base bg-[#f8f8f8] h-[100%]">
         <FilterBar />
         <Teachers variant="favorites" />
       </main>

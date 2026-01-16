@@ -1,12 +1,14 @@
 import { useState } from "react";
-import ButtonComp from "../ButtonComp/ButtonComp";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
-import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from "formik";
 import { Navigate, useNavigate } from "react-router";
 import { doCreateUserWithEmailAndPassword } from "../../firebase/auth";
 import { useAuth } from "../../features/auth/useAuth";
 import { updateProfile } from "firebase/auth";
+
+import ButtonComp from "../ButtonComp/ButtonComp";
 
 export interface SubmitRegisterFormValues {
   name: string;
@@ -14,13 +16,7 @@ export interface SubmitRegisterFormValues {
   password: string;
 }
 
-const initialValues: SubmitRegisterFormValues = {
-  name: "",
-  email: "",
-  password: "",
-};
-
-const submitRegisterFormSchema = Yup.object().shape({
+const validationSchema = Yup.object({
   name: Yup.string()
     .min(2, "Name must be at least 2 characters")
     .max(30, "Name is too long")
@@ -39,32 +35,45 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
   const navigate = useNavigate();
   const { userLoggedIn } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleClick = () => {
-    setShowPassword((prev) => !prev);
-  };
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<SubmitRegisterFormValues>({
+    resolver: yupResolver(validationSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+  });
 
-  const handleSubmit = async (
-    values: SubmitRegisterFormValues,
-    actions: FormikHelpers<SubmitRegisterFormValues>
-  ) => {
+  const onSubmit: SubmitHandler<SubmitRegisterFormValues> = async (values) => {
     try {
-      const userCredential = await doCreateUserWithEmailAndPassword(
-        values.email,
-        values.password
-      );
+      if (!isSubmitting) {
+        setIsSubmitting(true);
+        const userCredential = await doCreateUserWithEmailAndPassword(
+          values.email,
+          values.password
+        );
 
-      if (userCredential.user) {
-        await updateProfile(userCredential.user, {
-          displayName: values.name,
-        });
+        if (userCredential.user) {
+          await updateProfile(userCredential.user, {
+            displayName: values.name,
+          });
+        }
+
+        toast.success("Register was successfully!");
+        onSuccess();
+        reset();
+        navigate("/teachers");
       }
-      onSuccess();
-      toast.success("Register was successfully!");
-      actions.resetForm();
-      navigate("/teachers");
     } catch {
       toast.error("Registration failed");
+      setIsSubmitting(false);
     }
   };
 
@@ -81,70 +90,72 @@ const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
         Thank you for your interest in our platform! In order to register, we
         need some information. Please provide us with the following information
       </p>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={submitRegisterFormSchema}
-        onSubmit={handleSubmit}
-      >
-        <Form className="flex flex-col">
-          <label className="relative" htmlFor="name">
-            <Field
-              className="h-13.5 border border-gray rounded-xl py-4 px-4.5 w-full placeholder:text-neutral-500 outline-orange focus:border-orange mb-4.5"
-              name="name"
-              type="text"
-              placeholder="Name"
-            />
-            <ErrorMessage
-              name="name"
-              component="span"
-              className="text-red-400 text-[10px] absolute top-14 left-0"
-            />
-          </label>
-          <label className="relative" htmlFor="email">
-            <Field
-              className="h-13.5 border border-gray rounded-xl py-4 px-4.5 w-full placeholder:text-neutral-500 outline-orange focus:border-orange  mb-4.5"
-              name="email"
-              type="email"
-              placeholder="Email"
-            />
-            <ErrorMessage
-              name="email"
-              component="span"
-              className="text-red-400 text-[10px] absolute top-14 left-0"
-            />
-          </label>
-          <label className="relative" htmlFor="password">
-            <Field
-              className="h-13.5 border border-gray rounded-xl py-4 px-4.5 w-full placeholder:text-neutral-500 outline-orange focus:border-orange  mb-10"
-              name="password"
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-            />
-            <ErrorMessage
-              name="password"
-              component="span"
-              className="text-red-400 text-[10px] absolute top-14 left-0"
-            />
-            <button
-              className="absolute top-4 right-4.5 cursor-pointer"
-              type="button"
-              onClick={handleClick}
-              onMouseDown={(e) => e.preventDefault()}
+
+      <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+        <label className="relative">
+          <input
+            {...register("name")}
+            type="text"
+            placeholder="Name"
+            className="h-13.5 border border-gray rounded-xl py-4 px-4.5 w-full placeholder:text-neutral-500 outline-orange focus:border-orange mb-4.5"
+          />
+          {errors.name && (
+            <span className="text-red-400 text-[10px] absolute top-14 left-0">
+              {errors.name.message}
+            </span>
+          )}
+        </label>
+
+        <label className="relative">
+          <input
+            {...register("email")}
+            type="email"
+            placeholder="Email"
+            className="h-13.5 border border-gray rounded-xl py-4 px-4.5 w-full placeholder:text-neutral-500 outline-orange focus:border-orange mb-4.5"
+          />
+          {errors.email && (
+            <span className="text-red-400 text-[10px] absolute top-14 left-0">
+              {errors.email.message}
+            </span>
+          )}
+        </label>
+
+        <label className="relative">
+          <input
+            {...register("password")}
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            className="h-13.5 border border-gray rounded-xl py-4 px-4.5 w-full placeholder:text-neutral-500 outline-orange focus:border-orange mb-10"
+          />
+          {errors.password && (
+            <span className="text-red-400 text-[10px] absolute top-14 left-0">
+              {errors.password.message}
+            </span>
+          )}
+          <button
+            type="button"
+            className="absolute top-4 right-4.5 cursor-pointer"
+            onClick={() => setShowPassword((prev) => !prev)}
+            onMouseDown={(e) => e.preventDefault()}
+          >
+            <svg
+              className={`fill-none hover:stroke-[#d87f7f] transition duration-300 ease-in-out ${
+                showPassword ? "stroke-orange" : "stroke-black"
+              }`}
+              width={20}
+              height={20}
             >
-              <svg
-                className={`fill-none hover:stroke-[#d87f7f] transition duration-300 ease-in-out ${
-                  showPassword ? "stroke-orange" : " stroke-black"
-                }`}
-                width={20}
-                height={20}
-              >
-                <use href="/icons.svg#eye"></use>
-              </svg>
-            </button>
-          </label>
-          <ButtonComp width="w-full" text="Sign Up" type="submit" />
-        </Form>
-      </Formik>
+              <use href="/icons.svg#eye" />
+            </svg>
+          </button>
+        </label>
+
+        <ButtonComp
+          width="w-full"
+          text={isSubmitting ? "Signing Up..." : "Sign Up"}
+          type="submit"
+        />
+      </form>
     </div>
   );
 };

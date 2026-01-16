@@ -1,26 +1,19 @@
 import { useState } from "react";
-import ButtonComp from "../ButtonComp/ButtonComp";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
-import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from "formik";
-import {
-  doSignInWithEmailAndPassword,
-  // doSignInWithGoogle,
-} from "../../firebase/auth";
-import { useAuth } from "../../features/auth/useAuth.ts";
 import { Navigate, useNavigate } from "react-router";
+import ButtonComp from "../ButtonComp/ButtonComp";
+import { doSignInWithEmailAndPassword } from "../../firebase/auth";
+import { useAuth } from "../../features/auth/useAuth";
 
 export interface SubmitLoginFormValues {
   email: string;
   password: string;
 }
 
-const initialValues: SubmitLoginFormValues = {
-  email: "",
-  password: "",
-};
-
-const submitLoginFormSchema = Yup.object().shape({
+const validationSchema = Yup.object({
   email: Yup.string()
     .email("Invalid email format")
     .required("Email is required"),
@@ -34,39 +27,39 @@ interface LoginFormProps {
 const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const navigate = useNavigate();
   const { userLoggedIn } = useAuth();
+
   const [showPassword, setShowPassword] = useState(false);
-  const [isSigningIn, setIsSigninIn] = useState(false);
+  const [isSigningIn, setIsSigningIn] = useState(false);
 
-  const handleClick = () => {
-    setShowPassword((prev) => !prev);
-  };
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<SubmitLoginFormValues>({
+    resolver: yupResolver(validationSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-  const handleSubmit = async (
-    values: SubmitLoginFormValues,
-    actions: FormikHelpers<SubmitLoginFormValues>
-  ) => {
+  const onSubmit: SubmitHandler<SubmitLoginFormValues> = async (values) => {
     try {
       if (!isSigningIn) {
-        setIsSigninIn(true);
+        setIsSigningIn(true);
         await doSignInWithEmailAndPassword(values.email, values.password);
       }
-      onSuccess();
+
       toast.success("Successfully logged in!");
-      actions.resetForm();
+      onSuccess();
+      reset();
       navigate("/teachers");
     } catch {
       toast.error("Login failed");
+      setIsSigningIn(false);
     }
   };
-
-  // const onGoogleSignIn = () => {
-  //   if (!isSigningIn) {
-  //     setIsSigninIn(true);
-  //     doSignInWithGoogle().catch((err) => {
-  //       setIsSigninIn(false);
-  //     });
-  //   }
-  // };
 
   if (userLoggedIn) {
     return <Navigate to="/teachers" replace />;
@@ -79,57 +72,59 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
         Welcome back! Please enter your credentials to access your account and
         continue your search for an teacher.
       </p>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={submitLoginFormSchema}
-        onSubmit={handleSubmit}
-      >
-        <Form className="flex flex-col">
-          <label className="relative" htmlFor="email">
-            <Field
-              className="h-13.5 border border-gray rounded-xl py-4 px-4.5 w-full placeholder:text-neutral-500 outline-orange focus:border-orange  mb-4.5"
-              name="email"
-              type="email"
-              placeholder="Email"
-            />
-            <ErrorMessage
-              name="email"
-              component="span"
-              className="text-red-400 text-[10px] absolute top-14 left-0"
-            />
-          </label>
-          <label className="relative" htmlFor="password">
-            <Field
-              className="h-13.5 border border-gray rounded-xl py-4 px-4.5 w-full placeholder:text-neutral-500 outline-orange focus:border-orange  mb-10"
-              name="password"
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-            />
-            <ErrorMessage
-              name="password"
-              component="span"
-              className="text-red-400 text-[10px] absolute top-14 left-0"
-            />
-            <button
-              className="absolute top-4 right-4.5 cursor-pointer"
-              type="button"
-              onClick={handleClick}
-              onMouseDown={(e) => e.preventDefault()}
+
+      <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+        <label className="relative">
+          <input
+            {...register("email")}
+            type="email"
+            placeholder="Email"
+            className="h-13.5 border border-gray rounded-xl py-4 px-4.5 w-full placeholder:text-neutral-500 outline-orange focus:border-orange mb-4.5"
+          />
+          {errors.email && (
+            <span className="text-red-400 text-[10px] absolute top-14 left-0">
+              {errors.email.message}
+            </span>
+          )}
+        </label>
+
+        <label className="relative">
+          <input
+            {...register("password")}
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            className="h-13.5 border border-gray rounded-xl py-4 px-4.5 w-full placeholder:text-neutral-500 outline-orange focus:border-orange mb-10"
+          />
+          {errors.password && (
+            <span className="text-red-400 text-[10px] absolute top-14 left-0">
+              {errors.password.message}
+            </span>
+          )}
+
+          <button
+            type="button"
+            className="absolute top-4 right-4.5 cursor-pointer"
+            onClick={() => setShowPassword((prev) => !prev)}
+            onMouseDown={(e) => e.preventDefault()}
+          >
+            <svg
+              className={`fill-none transition duration-300 ${
+                showPassword ? "stroke-orange" : "stroke-black"
+              }`}
+              width={20}
+              height={20}
             >
-              <svg
-                className={`fill-none hover:stroke-[#d87f7f] transition duration-300 ease-in-out ${
-                  showPassword ? "stroke-orange" : " stroke-black"
-                }`}
-                width={20}
-                height={20}
-              >
-                <use href="/icons.svg#eye"></use>
-              </svg>
-            </button>
-          </label>
-          <ButtonComp width="w-full" text="Log In" type="submit" />
-        </Form>
-      </Formik>
+              <use href="/icons.svg#eye" />
+            </svg>
+          </button>
+        </label>
+
+        <ButtonComp
+          width="w-full"
+          text={isSubmitting ? "Logging in..." : "Log In"}
+          type="submit"
+        />
+      </form>
     </div>
   );
 };
