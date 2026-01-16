@@ -18,7 +18,7 @@ LearnLingo is a web application designed to help users practice foreign language
 
 1. Clone the repository
 ```
-git clone (https://github.com/DDenysKoval/LearnLingo.git)
+git clone https://github.com/DDenysKoval/LearnLingo.git
 ```
 
 2. Navigate to the project folder and install dependencies
