@@ -1,73 +1,55 @@
-# React + TypeScript + Vite
+📘 LearnLingo is a modern language learning platform with interactive practice
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<img width="1351" height="771" alt="image" src="https://github.com/user-attachments/assets/64941dc7-9091-4b57-96a4-821596d60ebb" />
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🚀 About the Project
 
-## React Compiler
+LearnLingo is a web application designed to help users practice foreign languages through interactive exercises, AI-powered conversations, and progress tracking. The project is built as a modern frontend with the potential to integrate backend functionality.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+✨ Main Features
+ - View the list of available teachers
+ - Search and filter teachers by language, price per hour or levels on knowledge
+ - Book a lesson with chosen teacher
+ - Add teachers to a favorites list
+ - Clean and fast UI powered by React
 
-## Expanding the ESLint configuration
+📥 Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1. Clone the repository
+```
+git clone https://github.com/DDenysKoval/LearnLingo.git
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. Navigate to the project folder and install dependencies
 ```
+cd LearnLingo
+npm install
+```
+
+🚀 Usage
+
+To run the application in development mode:
+```
+npm run dev
+```
+
+The app will be available at:
+http://localhost:5173/
+
+
+🛠️ Tech Stack
+ - React
+ - React Router
+ - TypeScript
+ - Tailwind
+ - Firebase
+
+🚀 Demo
+
+[https://learn-lingo-sage.vercel.app/](https://learn-lingo-sage.vercel.app/)
+
+👨‍💻 Author
+
+Denys Koval
+https://github.com/DDenysKoval
