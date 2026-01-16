@@ -12,7 +12,7 @@ export const fetchAllTeachers = async () => {
   const data = response.data;
 
   if (!data) {
-    return { teachers: [] };
+    return [] ;
   }
 
   const teachers = Object.entries(data).map(([id, teacher]) => ({

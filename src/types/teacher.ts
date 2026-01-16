@@ -20,8 +20,6 @@ export interface Teacher {
   experience: string
 }
 
-export type TeachersVariant = "all" | "favorites";
-
 export type TeacherFilters = {
   language: string;
   level: string;

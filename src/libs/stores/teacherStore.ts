@@ -30,7 +30,7 @@ export const useTeacherStore = create<TeacherStore>()(persist((set, get) => ({
   clearFavorites:()=>set({favorites: []})
 }),
   {
-    name: "favorite-teachers",
+    name: `favorite-teachers`,
   partialize: (state)=> ({favorites: state.favorites}),
   }
 ))

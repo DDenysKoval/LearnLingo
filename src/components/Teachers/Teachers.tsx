@@ -1,48 +1,39 @@
-import { fetchAllTeachers } from "../../services/teachersService";
+// import { fetchAllTeachers } from "../../services/teachersService";
 import ButtonComp from "../ButtonComp/ButtonComp";
 import TeacherItem from "../TeachersItem/TeachersItem";
-import { useQuery } from "@tanstack/react-query";
-import { useTeacherStore } from "../../libs/stores/teacherStore";
-import { type Teacher, type TeachersVariant } from "../../types/teacher";
+// import { useQuery } from "@tanstack/react-query";
+import { type Teacher } from "../../types/teacher";
 import { SyncLoader } from "react-spinners";
 import { useTeachersFilterStore } from "../../libs/stores/teacherFilterStore";
 import { useState } from "react";
+// import { fetchFavorites } from "../../firebase/favorite";
+// import { useAuthState } from "react-firebase-hooks/auth";
+// import { auth } from "../../firebase/firebase";
 
 interface TeachersProps {
-  variant: TeachersVariant;
+  teachersData: Teacher[];
+  isLoading: boolean;
 }
 
-const Teachers = ({ variant }: TeachersProps) => {
+const Teachers = ({ teachersData, isLoading }: TeachersProps) => {
   const limit = 4;
   const [visibleCount, setVisibleCount] = useState(limit);
-
   const { filters } = useTeachersFilterStore();
-  const { favorites } = useTeacherStore();
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["teachers", variant],
-    queryFn: () => {
-      if (variant === "favorites") return favorites;
-      return fetchAllTeachers();
-    },
+  const allTeachers: Teacher[] = teachersData ?? [];
+  const filteredTeachers = allTeachers.filter((teacher) => {
+    const matchLanguage =
+      !filters.language || (teacher.languages ?? []).includes(filters.language);
+
+    const matchLevel =
+      !filters.level || (teacher.levels ?? []).includes(filters.level);
+
+    const matchPrice =
+      !filters.price || teacher.price_per_hour <= filters.price;
+
+    return matchLanguage && matchLevel && matchPrice;
   });
-
-  const allTeachers: Teacher[] = Array.isArray(data)
-    ? data
-    : data && "teachers" in data
-    ? data.teachers
-    : [];
-
-  const teachers = allTeachers.filter(
-    (teacher) =>
-      teacher.languages.includes(filters.language) &&
-      teacher.levels.includes(filters.level) &&
-      teacher.price_per_hour <= filters.price
-  );
-
-  const visibleTeachers = teachers.slice(0, visibleCount);
-
-  console.log(teachers);
+  const visibleTeachers = filteredTeachers.slice(0, visibleCount);
 
   const handleLoadMore = () => {
     setVisibleCount((prev) => prev + limit);
@@ -68,7 +59,7 @@ const Teachers = ({ variant }: TeachersProps) => {
             </li>
           ))}
         </ul>
-        {visibleCount < teachers.length && (
+        {visibleCount < filteredTeachers.length && (
           <ButtonComp
             onClick={handleLoadMore}
             text="Load more"
